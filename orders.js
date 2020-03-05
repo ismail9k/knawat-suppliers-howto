@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 const webService = 'https://webservice.tsoft.com.tr/rest1';
-const authorization = { token : "gfqd9bps0pan945f2i5d3edadt" }
+const authorization = { token: 'gfqd9bps0pan945f2i5d3edadt' };
 
 module.exports = {
   request({ path, method = 'get', body }) {
@@ -41,16 +41,48 @@ module.exports = {
       orderby: ''
     };
     return this.request({
-      path : `${webService}/order/get`,
-      method:'post',
+      path: `${webService}/order/get`,
+      method: 'post',
       body
-    })
-    .catch(err => {
+    }).catch(err => {
       throw new Error(err.message, err.code);
     });
   },
-  get() {},
+  get() {
+    const body = {
+      ...authorization,
+      Archive: '',
+      start: '',
+      limit: '',
+      columns: '',
+      f: '',
+      orderby: ''
+    };
+    const orderId = '';
+    return this.request({
+      path: `${webService}/order2/getOrderDetailsByOrderId/${orderId}`,
+      method: 'post',
+      body
+    }).catch(err => {
+      throw new Error(err.message, err.code);
+    });
+  },
+  // NOTE : Create method is not ready for production
   create() {},
   update() {},
-  delete() {}
+  delete() {
+
+    const body = [
+      {
+        OrderId: ''
+      }
+    ];
+    return this.request({
+      path: `${webService}/order2/deleteOrders`,
+      method: 'post',
+      body
+    }).catch(err => {
+      throw new Error(err.message, err.code);
+    });
+  }
 };
