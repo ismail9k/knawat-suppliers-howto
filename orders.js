@@ -29,13 +29,13 @@ module.exports = {
       OrderStatusId: '',
       IsTransferred: '',
       Archive: '',
-      FetchProductData: "false",
-      FetchCustomerData: "false",
-      FetchInvoiceAddress: "false",
-      FetchDeliveryAddress: "false",
-      FetchCampaignData: "false",
-      FetchOrderContract: "false",
-      FetchDeleteds: "false",
+      FetchProductData: 'false',
+      FetchCustomerData: 'false',
+      FetchInvoiceAddress: 'true',
+      FetchDeliveryAddress: 'false',
+      FetchCampaignData: 'false',
+      FetchOrderContract: 'false',
+      FetchDeleteds: 'false',
       start: '',
       limit: '',
       columns: '',
@@ -74,7 +74,7 @@ module.exports = {
   setTransferredStatus() {
     const body = {
       ...authorization,
-      data: JSON.stringify([ { "OrderId": "3", "IsTransferred": "0" } ]),
+      data: JSON.stringify([{ OrderId: '3', IsTransferred: '0' }])
     };
     return this.request({
       path: `${webService}/order2/setTransferredStatus`,
@@ -84,11 +84,54 @@ module.exports = {
       throw new Error(err.message, err.code);
     });
   },
+  updateOrderStatusAsCargoReady() {
+    const body = {
+      ...authorization,
+      data: JSON.stringify([{ OrderCode: 'TS06033' }]),
+      Archive: '' // Send 1 for archived members
+    };
+    return this.request({
+      path: `${webService}/order2/updateOrderStatusAsCargoReady`,
+      method: 'POST',
+      body
+    }).catch(err => {
+      throw new Error(err.message, err.code);
+    });
+  },
+  updateOrderStatusAsDelivered() {
+    const body = {
+      ...authorization,
+      data: JSON.stringify([{ OrderCode: 'TS06033' }]),
+      Archive: '' // Send 1 for archived members
+    };
+    return this.request({
+      path: `${webService}/order2/updateOrderStatusAsDelivered`,
+      method: 'POST',
+      body
+    }).catch(err => {
+      throw new Error(err.message, err.code);
+    });
+  },
+  updateOrderStatusAsSentToCargo() {
+    const body = {
+      ...authorization,
+      data: JSON.stringify([
+        { OrderCode: 'TS06033', CargoCode: 'T1', CargoTrackingCode: 'ER34342' }
+      ])
+    };
+    return this.request({
+      path: `${webService}/order2/updateOrderStatusAsSentToCargo`,
+      method: 'POST',
+      body
+    }).catch(err => {
+      throw new Error(err.message, err.code);
+    });
+  },
   updateOrderStatusAsCancelled() {
     const body = {
       ...authorization,
-      data: JSON.stringify([ { "OrderCode": "TS06033" }]),
-      Archive: "" // Send 1 for archived members
+      data: JSON.stringify([{ OrderCode: 'TS06033' }]),
+      Archive: '' // Send 1 for archived members
     };
     return this.request({
       path: `${webService}/order2/updateOrderStatusAsCancelled`,
@@ -103,11 +146,11 @@ module.exports = {
       ...authorization,
       data: JSON.stringify([
         {
-          "OrderCode": 'TS06033',
-          "InvoiceDate": '2015-10-12T07:09:00Z',
-          "InvoiceNumber": '1111',
-          "WaybillNumber": '2222',
-          "IsInvoiced": '1'
+          OrderCode: 'TS06033',
+          InvoiceDate: '2015-10-12T07:09:00Z',
+          InvoiceNumber: '1111',
+          WaybillNumber: '2222',
+          IsInvoiced: '1'
         }
       ])
     };
@@ -120,9 +163,9 @@ module.exports = {
     });
   },
   delete() {
-    const body ={
+    const body = {
       ...authorization,
-      data :JSON.stringify([{"OrderId": "2"}])
+      data: JSON.stringify([{ OrderId: '2' }])
     };
     return this.request({
       path: `${webService}/order2/deleteOrders`,
